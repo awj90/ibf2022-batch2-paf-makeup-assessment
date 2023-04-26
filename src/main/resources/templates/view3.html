@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Post a Comment</title>
+  </head>
+  <body>
+    <table data-th-object="${restaurant}">
+      <tr>
+        <td><b>Name: </b></td>
+        <td data-th-text="*{name}"></td>
+      </tr>
+      <tr>
+        <td><b>Cuisine: </b></td>
+        <td data-th-text="*{cuisine}"></td>
+      </tr>
+      <tr>
+        <td><b>Address: </b></td>
+        <td data-th-text="*{address}"></td>
+      </tr>
+    </table>
+    <h2>Post a Comment</h2>
+    <form
+      method="POST"
+      data-th-action="@{/view/restaurant/comment}"
+      data-th-object="${comment}"
+    >
+      <table>
+        <tr>
+          <td>Name:</td>
+          <td>
+            <input
+              type="text"
+              placeholder="Poster's name"
+              data-th-field="*{name}"
+              required
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Rating:</td>
+          <td>
+            <input
+              type="number"
+              min="1"
+              max="5"
+              step="1"
+              data-th-field="*{rating}"
+              required
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Comment:</td>
+          <td>
+            <textarea
+              type="text"
+              placeholder="Type here"
+              data-th-field="*{comment}"
+            ></textarea>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <input type="text" data-th-field="*{restaurantId}" hidden />
+          </td>
+        </tr>
+        <tr>
+          <td><button type="submit">Post</button></td>
+          <td>
+            <a
+              data-th-href="@{/view/restaurants/{cuisine} (cuisine=${restaurant.cuisine})}"
+            >
+              Back
+            </a>
+          </td>
+        </tr>
+      </table>
+      <div data-th-unless="${#lists.isEmpty(restaurant.comments)}">
+        <table>
+          <tr>
+            <td>Date</td>
+            <td>Name</td>
+            <td>Comments</td>
+            <td>Rating</td>
+          </tr>
+          <tr
+            data-th-each="comment: ${restaurant.comments}"
+            data-th-object="${comment}"
+          >
+            <td data-th-text="*{#dates.format(date, 'dd-MM-yyyy')}"></td>
+            <td data-th-text="*{name}"></td>
+            <td data-th-text="*{comment}"></td>
+            <td data-th-text="*{rating}"></td>
+          </tr>
+        </table>
+      </div>
+    </form>
+  </body>
+</html>
